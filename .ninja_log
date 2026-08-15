@@ -1,0 +1,12 @@
+# ninja log v7
+1	23	1786716160552962830	/home/fenn/Desktop/Fennlib/build/CMakeFiles/cmake.verify_globs	1c94cd3d97c62ab6
+23	90	1786715933315284596	CMakeFiles/main.dir/examples/main.cpp.o	affb92f838dee100
+90	175	1786715933383286296	main	d46dd994619b325f
+1	22	1786716169068175675	/home/fenn/Desktop/Fennlib/build/CMakeFiles/cmake.verify_globs	1c94cd3d97c62ab6
+1	21	1786716177284381044	/home/fenn/Desktop/Fennlib/build/CMakeFiles/cmake.verify_globs	1c94cd3d97c62ab6
+1	21	1786716182834519773	/home/fenn/Desktop/Fennlib/build/CMakeFiles/cmake.verify_globs	1c94cd3d97c62ab6
+22	91	1786716182855520298	CMakeFiles/main.dir/examples/main.cpp.o	affb92f838dee100
+91	179	1786716182924522023	main	d46dd994619b325f
+2	22	1786716252114251472	/home/fenn/Desktop/Fennlib/build/CMakeFiles/cmake.verify_globs	1c94cd3d97c62ab6
+23	92	1786716252135251997	CMakeFiles/main.dir/examples/main.cpp.o	affb92f838dee100
+92	187	1786716252204253722	main	d46dd994619b325f

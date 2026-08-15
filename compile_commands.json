@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/fenn/Desktop/Fennlib/build",
+  "command": "/usr/bin/g++ -DUSE_SYSCALLS=1 -I/home/fenn/Desktop/Fennlib/include -g -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/main.dir/examples/main.cpp.o -c /home/fenn/Desktop/Fennlib/examples/main.cpp",
+  "file": "/home/fenn/Desktop/Fennlib/examples/main.cpp",
+  "output": "/home/fenn/Desktop/Fennlib/build/CMakeFiles/main.dir/examples/main.cpp.o"
+}
+]
