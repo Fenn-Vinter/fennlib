@@ -1,0 +1,25 @@
+#pragma once
+#if !defined(FENNLIB_CONSOLE_HPP)
+#define FENNLIB_CONSOLE_HPP
+
+#include "cppVersion"
+
+#if !defined(__FENNLIB_ALLOW_INTERNAL__)
+#define __FENNLIB_ALLOW_INTERNAL__
+#endif
+
+#if FENNLIB_CXX_VERSION >= 20
+    #include "detail/cxx20/_console.hpp"
+#elif FENNLIB_CXX_VERSION >= 17
+    #include "detail/cxx17/_console.hpp"
+#elif FENNLIB_CXX_VERSION >= 14
+    #include "detail/cxx14/_console.hpp"
+#elif FENNLIB_CXX_VERSION >= 11
+    #include "detail/cxx11/_console.hpp"
+#else
+    #error "Unsupported C++ standard version in FENNLIB_CXX_VERSION"
+#endif
+
+#undef __FENNLIB_ALLOW_INTERNAL__
+
+#endif

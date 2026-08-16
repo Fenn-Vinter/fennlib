@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - "-Iinclude"
+    - "-D__FENNLIB_ALLOW_INTERNAL__"

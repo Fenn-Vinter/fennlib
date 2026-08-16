@@ -1,0 +1,41 @@
+#pragma once
+#ifndef FENNLIB_FENNLIB_HPP
+#define FENNLIB_FENNLIB_HPP
+
+#if defined(_MSC_VER)
+    #pragma warning(push)
+    #pragma warning(disable: 4100 4101 4189 4505) 
+#elif defined(__clang__)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-variable"
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+    #pragma clang diagnostic ignored "-Wunused-function"
+    #pragma clang diagnostic ignored "-Wunused-macros"
+#elif defined(__GNUC__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunused-variable"
+    #pragma GCC diagnostic ignored "-Wunused-parameter"
+    #pragma GCC diagnostic ignored "-Wunused-function"
+    #pragma GCC diagnostic ignored "-Wunused-macros"
+#endif
+
+// IWYU pragma: begin_exports
+#include "cppVersion"
+#include "types"
+#include "new"
+#include "array"
+#include "sequence"
+#include "string"
+#include "console"
+#include "sys"
+// IWYU pragma: end_exports
+
+#if defined(_MSC_VER)
+    #pragma warning(pop)
+#elif defined(__clang__)
+    #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+    #pragma GCC diagnostic pop
+#endif
+
+#endif

@@ -1,3 +1,0 @@
-/home/fenn/Desktop/Fennlib/build/CMakeFiles/main.dir
-/home/fenn/Desktop/Fennlib/build/CMakeFiles/edit_cache.dir
-/home/fenn/Desktop/Fennlib/build/CMakeFiles/rebuild_cache.dir

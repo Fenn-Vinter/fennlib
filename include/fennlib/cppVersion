@@ -1,0 +1,39 @@
+#pragma once
+#if !defined(FENNLIB_CPPVERSION_HPP)
+#define FENNLIB_CPPVERSION_HPP
+
+#if defined(_MSVC_LANG) && (!defined(__cplusplus) || __cplusplus == 199711L)
+    #define FENNLIB_INTERNAL_CPLUSPLUS _MSVC_LANG
+#elif defined(__cplusplus)
+    #define FENNLIB_INTERNAL_CPLUSPLUS __cplusplus
+#else
+    #define FENNLIB_INTERNAL_CPLUSPLUS 0L
+#endif
+
+#if (FENNLIB_INTERNAL_CPLUSPLUS >= 202603L)
+    #define FENNLIB_CXX_VERSION 26
+#elif (FENNLIB_INTERNAL_CPLUSPLUS >= 202302L)
+    #define FENNLIB_CXX_VERSION 23
+#elif (FENNLIB_INTERNAL_CPLUSPLUS >= 202002L)
+    #define FENNLIB_CXX_VERSION 20
+#elif (FENNLIB_INTERNAL_CPLUSPLUS >= 201703L)
+    #define FENNLIB_CXX_VERSION 17
+#elif (FENNLIB_INTERNAL_CPLUSPLUS >= 201402L)
+    #define FENNLIB_CXX_VERSION 14
+#elif (FENNLIB_INTERNAL_CPLUSPLUS >= 201103L)
+    #define FENNLIB_CXX_VERSION 11
+#elif (FENNLIB_INTERNAL_CPLUSPLUS >= 199711L)
+    #define FENNLIB_CXX_VERSION 98
+#else
+    #define FENNLIB_CXX_VERSION 0
+#endif
+
+#undef FENNLIB_INTERNAL_CPLUSPLUS
+
+namespace fennlib {
+    
+    constexpr inline unsigned int cxx_version = FENNLIB_CXX_VERSION;
+
+}
+
+#endif
