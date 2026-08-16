@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/fenn/Desktop/fennlib/build",
+  "command": "c:\\msys64\\ucrt64\\bin\\g++.exe -IC:/Users/fenn/Desktop/fennlib/include -g -std=c++20 -Wall -Wextra -o CMakeFiles\\test_runner.dir\\test\\main.cpp.obj -c C:\\Users\\fenn\\Desktop\\fennlib\\test\\main.cpp",
+  "file": "C:/Users/fenn/Desktop/fennlib/test/main.cpp",
+  "output": "C:/Users/fenn/Desktop/fennlib/build/CMakeFiles/test_runner.dir/test/main.cpp.obj"
+}
+]
