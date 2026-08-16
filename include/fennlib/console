@@ -7,8 +7,11 @@
 #if !defined(__FENNLIB_ALLOW_INTERNAL__)
 #define __FENNLIB_ALLOW_INTERNAL__
 #endif
-
-#if FENNLIB_CXX_VERSION >= 20
+#if FENNLIB_CXX_VERSION >= 26
+    #include "detail/cxx26/_console.hpp"
+#elif FENNLIB_CXX_VERSION >= 23
+    #include "detail/cxx23/_console.hpp"
+#elif FENNLIB_CXX_VERSION >= 20
     #include "detail/cxx20/_console.hpp"
 #elif FENNLIB_CXX_VERSION >= 17
     #include "detail/cxx17/_console.hpp"
