@@ -11,6 +11,47 @@
 namespace fennlib {
     namespace internal {
 
+        template <typename T>
+        constexpr T declval_impl() noexcept;
+
+        template <bool B, typename T = void>
+        struct _enable_if {};
+
+        template <typename T>
+        struct _enable_if<true, T> { using type = T; };
+
+        template <bool B, typename T = void>
+        using _enable_if_t = typename _enable_if<B, T>::type;
+
+        template <typename T>
+        struct _decay_impl { using type = T; };
+        
+        template <typename T>
+        struct _decay_impl<T&> { using type = T; };
+
+        template <typename T>
+        struct _decay_impl<const T> { using type = T; };
+
+        template <typename T>
+        using _decay_t = typename _decay_impl<T>::type;
+
+        template <typename T>
+        struct _has_begin_end {
+        private:
+            template <typename U>
+            static constexpr auto test(int) -> decltype(
+                declval_impl<const U&>().begin(),
+                declval_impl<const U&>().end(),
+                bool{}
+            ) { return true; }
+
+            template <typename>
+            static constexpr bool test(...) { return false; }
+
+        public:
+            static constexpr bool value = test<T>(0);
+        };
+
         template <fennlib::types::uint SSO = 23>
         class __basic_string {
         private:
@@ -129,6 +170,45 @@ namespace fennlib {
                     }
                     m_heap_data[len] = '\0';
                 }
+                return *this;
+            }
+
+            __basic_string(const char* first, const char* last) {
+                if (!first || last < first) {
+                    m_sso_data[0] = '\0';
+                    return;
+                }
+
+                usize len = static_cast<usize>(last - first);
+                m_size = len;
+
+                if (len <= SSO) {
+                    m_is_heap = false;
+                    m_capacity = SSO;
+                    for (usize i = 0; i < len; ++i) {
+                        m_sso_data[i] = first[i];
+                    }
+                    m_sso_data[len] = '\0';
+                } else {
+                    allocate_heap(len);
+                    for (usize i = 0; i < len; ++i) {
+                        m_heap_data[i] = first[i];
+                    }
+                    m_heap_data[len] = '\0';
+                }
+            }
+
+            template <typename Range,
+                      typename = _enable_if_t<_has_begin_end<Range>::value && 
+                                             !fennlib::is_same_v<_decay_t<Range>, __basic_string>>>
+            __basic_string(const Range& range)
+                : __basic_string(range.begin(), range.end()) {}
+
+            template <typename Range,
+                      typename = _enable_if_t<_has_begin_end<Range>::value && 
+                                             !fennlib::is_same_v<_decay_t<Range>, __basic_string>>>
+            __basic_string& operator=(const Range& range) {
+                *this = __basic_string(range.begin(), range.end());
                 return *this;
             }
 
