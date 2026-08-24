@@ -212,6 +212,44 @@ namespace fennlib {
                 return *this;
             }
 
+            __basic_string& operator+=(const char* str) {
+                if (!str) return *this;
+                usize extra_len = c_str_len(str);
+                if (extra_len == 0) return *this;
+
+                usize new_size = m_size + extra_len;
+                if (new_size > m_capacity) {
+                    usize new_cap = m_capacity * 2;
+                    if (new_cap < new_size) new_cap = new_size;
+                    
+                    char* old_data = data();
+                    char* new_data = static_cast<char*>(::operator new(new_cap + 1));
+                    
+                    for (usize i = 0; i < m_size; ++i) {
+                        new_data[i] = old_data[i];
+                    }
+                    
+                    free_heap();
+                    m_heap_data = new_data;
+                    m_capacity = new_cap;
+                    m_is_heap = true;
+                }
+
+                char* dest = data();
+                for (usize i = 0; i < extra_len; ++i) {
+                    dest[m_size + i] = str[i];
+                }
+                dest[new_size] = '\0';
+                m_size = new_size;
+
+                return *this;
+            }
+
+            template <fennlib::types::uint OtherSSO>
+            __basic_string& operator+=(const __basic_string<OtherSSO>& other) {
+                return *this += other.c_str();
+            }
+
             [[nodiscard]] const char* c_str() const noexcept {
                 return m_is_heap ? m_heap_data : m_sso_data;
             }
@@ -237,6 +275,27 @@ namespace fennlib {
             [[nodiscard]] char* end() noexcept { return data() + m_size; }
             [[nodiscard]] const char* end() const noexcept { return data() + m_size; }
         };
+
+        template <fennlib::types::uint SSO1, fennlib::types::uint SSO2>
+        __basic_string<SSO1> operator+(const __basic_string<SSO1>& lhs, const __basic_string<SSO2>& rhs) {
+            __basic_string<SSO1> result = lhs;
+            result += rhs;
+            return result;
+        }
+
+        template <fennlib::types::uint SSO>
+        __basic_string<SSO> operator+(const char* lhs, const __basic_string<SSO>& rhs) {
+            __basic_string<SSO> result(lhs);
+            result += rhs;
+            return result;
+        }
+
+        template <fennlib::types::uint SSO>
+        __basic_string<SSO> operator+(const __basic_string<SSO>& lhs, const char* rhs) {
+            __basic_string<SSO> result = lhs;
+            result += rhs;
+            return result;
+        }
     }
 
     using string     = fennlib::internal::__basic_string<23>;
