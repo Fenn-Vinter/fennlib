@@ -213,11 +213,50 @@ namespace fennlib::sys {
 #endif
     }
 
+    namespace bootloader {
+#if defined(__Limine__) || defined(__limine__) || defined (__LIMINE__)
+        [[maybe_unused]] inline constexpr bool is_limine = true;
+#else
+        [[maybe_unused]] inline constexpr bool is_limine = false;
+#endif
+
+#if defined(__Grub__) || defined(__grub__) || defined (__GRUB__)
+        [[maybe_unused]] inline constexpr bool is_grub = true;
+#else
+        [[maybe_unused]] inline constexpr bool is_grub = false;
+#endif
+
+#if defined(__WINDOWS__) || defined(_WIN32) || defined(_WIN64)
+        [[maybe_unused]] inline constexpr bool is_windows_bootmgr = true;
+#else
+        [[maybe_unused]] inline constexpr bool is_windows_bootmgr = false;
+#endif
+    }
+
     namespace bitsize {
+#if defined(__64bit__)
+        [[maybe_unused]] inline constexpr bool is_64 = true;
+#else
         [[maybe_unused]] inline constexpr bool is_64 = (sizeof(void*) == 8);
+#endif
+
+#if defined(__32bit__)
+        [[maybe_unused]] inline constexpr bool is_32 = true;
+#else
         [[maybe_unused]] inline constexpr bool is_32 = (sizeof(void*) == 4);
+#endif
+
+#if defined(__16bit__)
+        [[maybe_unused]] inline constexpr bool is_16 = true;
+#else
         [[maybe_unused]] inline constexpr bool is_16 = (sizeof(void*) == 2);
-        [[maybe_unused]] inline constexpr bool is_8  = (sizeof(void*) == 1);
+#endif
+
+#if defined(__8bit__)
+        [[maybe_unused]] inline constexpr bool is_8 = true;
+#else
+        [[maybe_unused]] inline constexpr bool is_8 = (sizeof(void*) == 1);
+#endif
     }
 
 }

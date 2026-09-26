@@ -6,12 +6,16 @@
 #define __FENNLIB_INTERNAL_CXX17_NEW_HPP
 #include "_types.hpp"
 
-inline void* operator new(fennlib::types::usize, void* ptr) noexcept {
-    return ptr;
+// Use standard definitions for placement new to satisfy Clang's compiler diagnostics
+inline void* operator new(decltype(sizeof(0)), void* __p) noexcept {
+    return __p;
 }
 
-inline void* operator new(fennlib::types::usize, fennlib::types::wildptr ptr) noexcept {
-    return static_cast<void*>(ptr);
+inline void* operator new[](decltype(sizeof(0)), void* __p) noexcept {
+    return __p;
 }
+
+inline void operator delete(void*, void*) noexcept {}
+inline void operator delete[](void*, void*) noexcept {}
 
 #endif

@@ -35,6 +35,16 @@ namespace fennlib {
         template <typename T>
         using _decay_t = typename _decay_impl<T>::type;
 
+        inline bool string_equals(const char* a, const char* b) {
+            if (!a || !b) return false;
+            usize i = 0;
+            while (a[i] != '\0' && b[i] != '\0') {
+                if (a[i] != b[i]) return false;
+                ++i;
+            }
+            return a[i] == b[i];
+        }
+
         template <typename T>
         struct _has_begin_end {
         private:
@@ -295,6 +305,21 @@ namespace fennlib {
             __basic_string<SSO> result = lhs;
             result += rhs;
             return result;
+        }
+
+        template <fennlib::types::uint SSO1, fennlib::types::uint SSO2>
+        bool operator==(const __basic_string<SSO1>& lhs, const __basic_string<SSO2>& rhs) {
+            return string_equals(lhs.c_str(), rhs.c_str());
+        }
+
+        template <fennlib::types::uint SSO>
+        bool operator==(const __basic_string<SSO>& lhs, const char* rhs) {
+            return string_equals(lhs.c_str(), rhs);
+        }
+
+        template <fennlib::types::uint SSO>
+        bool operator==(const char* lhs, const __basic_string<SSO>& rhs) {
+            return string_equals(lhs, rhs.c_str());
         }
     }
 

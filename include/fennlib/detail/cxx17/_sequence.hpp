@@ -7,6 +7,7 @@
 
 #include "_types.hpp"
 #include "_is_same.hpp"
+#include "_new.hpp"
 
 namespace fennlib {
     struct default_allocator {
@@ -35,7 +36,7 @@ namespace fennlib {
             T* new_block = Allocator::template allocate<T>(new_capacity);
 
             for (usize i = 0; i < m_size; ++i) {
-                new_block[i] = static_cast<T&&>(m_data[i]);
+                ::new (static_cast<void*>(new_block + i)) T(static_cast<T&&>(m_data[i]));
                 m_data[i].~T(); 
             }
 
@@ -65,16 +66,15 @@ namespace fennlib {
             constexpr usize arg_count = sizeof...(Args);
             if constexpr (arg_count > 0) {
                 m_capacity = (arg_count + ahead > arg_count * 2) 
-                             ? (arg_count + ahead) 
-                             : (arg_count * 2);
+                           ? (arg_count + ahead) 
+                           : (arg_count * 2);
 
                 m_data = Allocator::template allocate<T>(m_capacity);
 
-                ((m_data[m_size++] = static_cast<T>(args)), ...);
+                ((::new (static_cast<void*>(m_data + m_size++)) T(static_cast<T>(args))), ...);
             }
         }
 
-        
         template <typename Dummy = void>
         constexpr sequence(const char* str) {
             static_assert(fennlib::is_same_v<T, char>, "fennlib::sequence C-string constructor is only valid for T = char");
@@ -85,7 +85,7 @@ namespace fennlib {
                 }
                 ensure_capacity(len);
                 for (usize i = 0; i < len; ++i) {
-                    m_data[i] = str[i];
+                    ::new (static_cast<void*>(m_data + i)) char(str[i]);
                 }
                 m_size = len;
             }
@@ -107,12 +107,14 @@ namespace fennlib {
 
         void push_back(const T& value) {
             ensure_capacity(m_size + 1);
-            m_data[m_size++] = value;
+            ::new (static_cast<void*>(m_data + m_size)) T(value);
+            m_size++;
         }
 
         void push_back(T&& value) {
             ensure_capacity(m_size + 1);
-            m_data[m_size++] = static_cast<T&&>(value);
+            ::new (static_cast<void*>(m_data + m_size)) T(static_cast<T&&>(value));
+            m_size++;
         }
 
         template <typename First, typename Second, typename... Rest>
@@ -120,9 +122,9 @@ namespace fennlib {
             constexpr usize total_new = 2 + sizeof...(Rest);
             ensure_capacity(m_size + total_new);
             
-            m_data[m_size++] = static_cast<First&&>(first);
-            m_data[m_size++] = static_cast<Second&&>(second);
-            ((m_data[m_size++] = static_cast<Rest&&>(rest)), ...);
+            ::new (static_cast<void*>(m_data + m_size++)) T(static_cast<First&&>(first));
+            ::new (static_cast<void*>(m_data + m_size++)) T(static_cast<Second&&>(second));
+            ((::new (static_cast<void*>(m_data + m_size++)) T(static_cast<Rest&&>(rest))), ...);
         }
 
         void pop_back(usize n = 1) noexcept {

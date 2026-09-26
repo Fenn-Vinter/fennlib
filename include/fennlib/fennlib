@@ -28,6 +28,7 @@
 #include "string"
 #include "console"
 #include "sys"
+#include "utilities"
 // IWYU pragma: end_exports
 
 #if defined(_MSC_VER)
