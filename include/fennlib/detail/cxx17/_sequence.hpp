@@ -71,7 +71,7 @@ namespace fennlib {
 
                 m_data = Allocator::template allocate<T>(m_capacity);
 
-                ((::new (static_cast<void*>(m_data + m_size++)) T(static_cast<T>(args))), ...);
+                ((::new (static_cast<void*>(m_data + m_size++)) T(static_cast<Args&&>(args))), ...);
             }
         }
 
@@ -137,6 +137,19 @@ namespace fennlib {
             }
         }
 
+        void erase_ordered(usize index) {
+            if (index >= m_size) return;
+
+            m_data[index].~T();
+
+            for (usize i = index; i < m_size - 1; ++i) {
+                ::new (static_cast<void*>(m_data + i)) T(static_cast<T&&>(m_data[i + 1]));
+                m_data[i + 1].~T();
+            }
+
+            --m_size;
+        }
+
         [[nodiscard]] constexpr usize size() const noexcept { return m_size; }
         [[nodiscard]] constexpr usize capacity() const noexcept { return m_capacity; }
         [[nodiscard]] constexpr bool empty() const noexcept { return m_size == 0; }
@@ -151,6 +164,10 @@ namespace fennlib {
         [[nodiscard]] constexpr const T* begin() const noexcept { return m_data; }
         [[nodiscard]] constexpr T* end() noexcept { return m_data + m_size; }
         [[nodiscard]] constexpr const T* end() const noexcept { return m_data + m_size; }
+        [[nodiscard]] constexpr T& front() noexcept { return m_data[0]; }
+        [[nodiscard]] constexpr const T& front() const noexcept { return m_data[0]; }
+        [[nodiscard]] constexpr T& back() noexcept { return m_data[m_size - 1]; }
+        [[nodiscard]] constexpr const T& back() const noexcept { return m_data[m_size - 1]; }
     };
 }
 
