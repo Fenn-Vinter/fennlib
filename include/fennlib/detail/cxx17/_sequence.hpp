@@ -60,6 +60,10 @@ namespace fennlib {
 
     public:
         constexpr sequence() noexcept = default;
+        sequence(const sequence& other) = default;
+        sequence(sequence&& other) noexcept = default;
+        sequence& operator=(const sequence& other) = default;
+        sequence& operator=(sequence&& other) noexcept = default;
 
         template <typename... Args>
         constexpr sequence(Args&&... args) {
@@ -85,7 +89,7 @@ namespace fennlib {
                 }
                 ensure_capacity(len);
                 for (usize i = 0; i < len; ++i) {
-                    ::new (static_cast<void*>(m_data + i)) char(str[i]);
+                    ::new (fennlib::place, static_cast<void*>(m_data + i)) char(str[i]);
                 }
                 m_size = len;
             }
@@ -107,13 +111,13 @@ namespace fennlib {
 
         void push_back(const T& value) {
             ensure_capacity(m_size + 1);
-            ::new (static_cast<void*>(m_data + m_size)) T(value);
+            ::new (fennlib::place, static_cast<void*>(m_data + m_size)) T(value);
             m_size++;
         }
 
         void push_back(T&& value) {
             ensure_capacity(m_size + 1);
-            ::new (static_cast<void*>(m_data + m_size)) T(static_cast<T&&>(value));
+            ::new (fennlib::place, static_cast<void*>(m_data + m_size)) T(static_cast<T&&>(value));
             m_size++;
         }
 
@@ -122,9 +126,9 @@ namespace fennlib {
             constexpr usize total_new = 2 + sizeof...(Rest);
             ensure_capacity(m_size + total_new);
             
-            ::new (static_cast<void*>(m_data + m_size++)) T(static_cast<First&&>(first));
-            ::new (static_cast<void*>(m_data + m_size++)) T(static_cast<Second&&>(second));
-            ((::new (static_cast<void*>(m_data + m_size++)) T(static_cast<Rest&&>(rest))), ...);
+            ::new (fennlib::place, static_cast<void*>(m_data + m_size++)) T(static_cast<First&&>(first));
+            ::new (fennlib::place, static_cast<void*>(m_data + m_size++)) T(static_cast<Second&&>(second));
+            ((::new (fennlib::place, static_cast<void*>(m_data + m_size++)) T(static_cast<Rest&&>(rest))), ...);
         }
 
         void pop_back(usize n = 1) noexcept {
