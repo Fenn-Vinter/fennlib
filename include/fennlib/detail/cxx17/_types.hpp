@@ -264,6 +264,9 @@ namespace fennlib::types {
 
     using byte = w8;
     using bit  = bool;
+    
+    constexpr decltype(nullptr) null = nullptr;
+    constexpr uintptr nil = static_cast<uintptr>(0);
 }
 
 namespace fennlib {
