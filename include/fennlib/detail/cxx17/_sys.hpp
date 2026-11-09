@@ -85,6 +85,23 @@ namespace fennlib::sys {
 #else
         [[maybe_unused]] inline constexpr bool is_linux = false;
 #endif
+
+        [[nodiscard]] inline constexpr const char* name() noexcept {
+            if constexpr      (is_alopexos)   return "AlopexOS";
+            else if constexpr (is_windows)    return "Windows";
+            else if constexpr (is_android)    return "Android";
+            else if constexpr (is_apple)      return "MacOS";
+            else if constexpr (is_freebsd)    return "FreeBSD";
+            else if constexpr (is_openbsd)    return "OpenBSD";
+            else if constexpr (is_netbsd)     return "NetBSD";
+            else if constexpr (is_dragonfly)  return "DragonFly";
+            else if constexpr (is_solaris)    return "Sun";
+            else if constexpr (is_haiku)      return "Haiku";
+            else if constexpr (is_emscripten) return "Emscripten";
+            else if constexpr (is_aix)        return "Aix";
+            else if constexpr (is_linux)      return "Linux";
+            else return "Unknown";
+        }
     }
 
     namespace arch {
@@ -211,6 +228,29 @@ namespace fennlib::sys {
 #else
         [[maybe_unused]] inline constexpr bool is_wasm32 = false;
 #endif
+
+        [[nodiscard]] inline constexpr const char* name() noexcept {
+            if constexpr      (is_x64)     return "X86_64";
+            else if constexpr (is_x86)     return "X86";
+            else if constexpr (is_arm64)   return "Arm64";
+            else if constexpr (is_arm32)   return "Arm32";
+            else if constexpr (is_riscv64) return "Riscv64";
+            else if constexpr (is_riscv32) return "Riscv32";
+            else if constexpr (is_ppc64)   return "Ppc64";
+            else if constexpr (is_ppc32)   return "Ppc32";
+            else if constexpr (is_mips64)  return "Mips64";
+            else if constexpr (is_mips32)  return "Mips32";
+            else if constexpr (is_sparc64) return "Sparc64";
+            else if constexpr (is_sparc32) return "Sparc32";
+            else if constexpr (is_s390x)   return "S390x";
+            else if constexpr (is_s390)    return "S390";
+            else if constexpr (is_ia64)    return "ia64";
+            else if constexpr (is_superh)  return "SuperH";
+            else if constexpr (is_m68k)    return "M68k";
+            else if constexpr (is_wasm64)  return "Wasm64";
+            else if constexpr (is_wasm32)  return "Wasm32";
+            else return "Unknown";
+        }
     }
 
     namespace bootloader {
